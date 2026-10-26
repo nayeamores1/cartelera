@@ -1,0 +1,53 @@
+# Especificación previa a implementación
+
+## Etapa actual
+Etapa 4: Mi lista. Ruta obligatoria usuarios/{uid}/mi_lista/{tipo}_{tmdbId}; campos exactos tmdbId/tipo/titulo/anio/posterPath/estado/calificacionPersonal/comentario/agregadoEn/actualizadoEn. Estado inicial por_ver, calificación null y comentario vacío. Fechas serverTimestamp y metadatos inmutables tras crear. Regla y servicio validan títulos hasta 200, comentario hasta 500, estrellas enteras 1–5 solo en vista, y limpieza de calificación al cambiar a otro estado. Las transacciones evitan duplicados sin sobrescribir entradas existentes. Tipos Firestore con Timestamp separados de tipos serializables ISO para caché.
+
+Context expone lista, carga, mutación, errores, copia disponible, fecha, conexión y resultado pendiente. Controlador por uid nuevo en cada cambio de sesión, con snapshot vacío inmediatamente. Se invalida cualquier respuesta anterior. Copia primero, servidor después; consultas explícitas desde servidor, sin tratar datos locales internos del SDK como confirmación remota. Mutaciones bloqueadas sin conectividad confirmada, sin lectura remota válida o mientras haya otra operación. NetInfo revisa alcance de Internet, incluyendo regreso al primer plano; errores del servidor se muestran sin confundir permiso denegado con modo avión.
+
+Tiempos de E/S limitados a 15 s por etapa. Un límite de espera no cancela un commit enviado. Un marcador durable por uid se escribe antes de mutar, se conserva la promesa real y se bloquea el reenvío mientras está pendiente. El guard de transacción evita nuevos envíos/reintentos si la sesión o conexión cambia o expira el plazo. Se reconcilia mediante lectura remota después de confirmar la promesa, al reconectar, al volver al primer plano o manualmente. Una lectura iniciada con escritura en vuelo no libera el marcador aunque esta termine durante la consulta; obliga a otra posterior. Tras reiniciar, un marcador existente exige lectura remota sin anunciar éxito/cancelación de la operación anterior.
+
+Mi lista: filtros combinables de estado/tipo, vacío global distinto de filtros sin coincidencias, tarjetas con póster/estado/estrellas y edición por itemId. Editar: selector, estrellas solo en Vista, Sin calificar, contador de comentario, Guardar, confirmación antes de Quitar y alerta al navegar con cambios sin guardar. Offline permite ver datos y preparar un borrador, pero no guardar/quitar/agregar. Las imágenes pueden aparecer como placeholder si no están disponibles offline.
+
+firestore.rules preparado por Codex y publicado manualmente por la usuaria: propietario no anónimo, esquema y límites completos, ID derivado consistente, timestamps de solicitud en creación, metadatos originales y agregadoEn inmutables en edición, actualizadoEn=request.time, delete solo propietario. Otras rutas denegadas, sin permisos amplios. La usuaria confirmó la publicación manual y los recorridos principales de Auth, catálogo y Mi lista en Expo Go. También confirmó get/delete denegados con UID ajeno en el simulador de producción y capturas revisadas de dos usuarios, tres documentos y ambas denegaciones. Las variantes adicionales (concurrencia entre dispositivos, escrituras inciertas/respuestas tardías en dispositivo, 501 caracteres manualmente, lector de pantalla e iOS) siguen pendientes. Las matrices PRUEBAS_*.md separan confirmaciones manuales, pruebas locales y pendientes.
+
+## Etapa anterior: catálogo (registro histórico; estados vigentes en PRUEBAS_CATALOGO.md)
+Etapa 3: catálogo TMDB con datos reales, conservando Auth. TipoMedio distingue movie/tv y EstadoPeticion<T> es unión discriminada inicial/cargando/error/exito. En paginación, carga/error pueden retener datos anteriores. Configuración de imágenes cacheada solo en memoria durante 24 h; no se cachean errores. Todas las peticiones API en tmdbService, con token estático, Bearer, idioma es-ES, cancelación y timeout de 15 s. Una pulsación explícita permite reintentar; no hay bucles de reintento.
+
+Buscar: debounce 350 ms, invalidación inmediata al editar texto/filtro, aborto y contador de revisión para rechazar respuestas viejas. Cada nueva búsqueda reinicia página y resultados. Todo usa multi y filtra personas después de recibir la página; se conserva page/total_pages del endpoint (hasta 500 páginas disponibles por API). Una página sin obras no representa el fin si hay páginas posteriores. La lista virtualizada usa claves tipo+ID y deduplicación al acumular resultados. No hay consultas vacías. Detalle recibe tipo/ID y credits por append_to_response, con carga/error/reintento y placeholders de póster/elenco. Agregar permanece deshabilitado sin escritura. Acerca de conserva logo y aviso inglés oficial, además de la explicación española.
+
+Al cerrar aquella etapa, catálogo móvil y Mi lista estaban pendientes. Este es un alcance histórico: la confirmación actual de catálogo/Mi lista y la publicación manual constan arriba y en las matrices, sin extenderla a casos adicionales.
+
+## Etapa anterior: autenticación (registro histórico; estados vigentes en PRUEBAS_AUTH.md)
+Etapa 2: implementar únicamente Auth. Recuperar sesión con onAuthStateChanged antes de mostrar rutas; sin sesión solo Login/Registro y con sesión pestañas Buscar/Mi lista/Acerca de. Registro inicia sesión automáticamente por comportamiento del SDK. Logout elimina el grupo autenticado. Formularios con confirmación en registro, correo recortado, contraseña sin alteraciones, mínimo local de 6 caracteres solo en registro y política adicional validada por Firebase. Mostrar/ocultar contraseña, carga, bloqueo inmediato por referencia y mensajes accesibles. No inventar usuarios, películas ni sincronizaciones. Catálogo, lista, caché de lista y reglas Firestore no se implementan en esta etapa.
+
+Persistencia Auth: initializeAuth con getReactNativePersistence(AsyncStorage), singleton en config y observador con cancelación en Context. El SDK administra la sesión; no guardar manualmente contraseñas/tokens. La UI espera el primer callback y ofrece reintento si falla la inicialización. Servicio transforma errores conocidos y usa un mensaje genérico seguro para desconocidos. Credenciales incorrectas no distinguen entre correo inexistente y contraseña errónea.
+
+Decisión de compatibilidad autorizada: Firebase 13.1.0 omite la función de persistencia en la entrada general de tipos. TypeScript selecciona la declaración oficial React Native; no se añade ni se modifica ninguna firma. Se retira el parche anterior. Metro ignora paths de TypeScript y conserva resolución pública runtime; imports de aplicación únicamente firebase/app y firebase/auth. No se degradaron versiones de Firebase incompatibles con la documentación de Expo.
+
+## UX
+Fondo #0B1020, superficies #171E32, acento #B7A0FF, texto #F5F6FA y secundario #AAB3C7. Bordes de 16 px, controles de al menos 44 px, texto legible y etiquetas accesibles. Safe areas superior/inferior; formularios con KeyboardAvoidingView y scroll. Idioma español; correo con teclado email y contraseña oculta. Navegación atrás nativa. Los mensajes distinguirán lista vacía, consulta vacía, error y ausencia de red. Nunca mostrar una copia antigua como sincronización exitosa.
+
+## Criterios de aceptación finales
+- RF1: credenciales reales crean/inician sesión; reiniciar conserva usuario; logout limpia estado privado; todos los errores visibles están traducidos.
+- RF2: consulta busca movie/tv, evita resultados de personas; cargar más preserva consulta, no repite IDs y se detiene al finalizar; cancelación evita respuestas obsoletas.
+- RF3: muestra poster o alternativa accesible, sinopsis o texto de ausencia, puntuación TMDB sobre 10 diferenciada de la personal y elenco con alternativa vacía.
+- RF4: documento determinista movie_123/tv_123 impide duplicados y permite el mismo ID de distintos tipos.
+- RF5: filtros combinables por estado y tipo, con vacío específico y opción para restablecer.
+- RF6: rechaza fracciones, cero, valores mayores que 5 y comentarios de 501 caracteres; al salir de vista limpia calificación con explicación; null representa sin calificar.
+- RF7: cancelar no escribe; confirmar elimina el documento y actualiza copia solo tras éxito.
+- RF8: cada usuario ve solo su copia, timestamp visible; sin red no se afirma sincronización y se conserva copia válida; fallo de caché no destruye datos remotos.
+- RF9: logo aprobado sin redibujarlo, atribución oficial y cierre real de sesión.
+- RF10: tsc estricto sin errores, separación de capas, .env ignorado y ejemplo vacío versionable.
+
+## Caché y privacidad
+Clave implementada `cartelera:lista:v1:{uid}`; sobre `{version: 1, uid, savedAt: ISO8601, items: ListaItem[]}` validado al leer, incluyendo ID único por tipo+ID, campos exactos y fechas ISO. Una copia por cuenta, sin contraseñas ni token TMDB. Cargar copia al autenticar; consultar Firestore; reemplazar copia tras snapshot de servidor. savedAt avanza en UI solo tras escritura local completada. Datos corruptos generan aviso y recuperación remota. Logout vacía inmediatamente la lista visible y descarta respuestas antiguas; conserva la copia por uid para poder consultarla tras una futura sesión válida sin conexión. Sin sesión no se muestra ninguna cuenta. AsyncStorage no está cifrado. Colas por uid y generación de sesión impiden que un trabajo antiguo sobrescriba una copia nueva. El marcador pendiente usa una clave independiente y no daña la última copia válida.
+
+Versión funcional: copia solo lectura sin conexión y sin cola offline de mutaciones. Firestore es fuente de verdad al reconectar. Ediciones entre dispositivos siguen la última transacción confirmada; no se mezclan comentarios ni se promete resolución automática de borradores. NetInfo 12.0.1 instalado mediante expo install y E/S remota confirmada antes de mutar.
+
+## Contratos y seguridad
+Servicios reciben UID desde Auth, nunca desde campos editables. Context coordina sesión y acciones; pantallas no importan Firebase. Config Firebase se inicializa bajo demanda con `initializeAuth` y `getReactNativePersistence(AsyncStorage)`. TMDB usa Authorization Bearer, idioma es-ES, URLSearchParams, validación HTTP y AbortSignal en el servicio. Reglas deben denegar acceso a otras cuentas y validar el esquema en servidor antes de implementar lista. Codex no despliega reglas; la usuaria confirmó su publicación manual.
+
+## Pantallas
+Iniciar sesión/Registro sin sesión; tabs Buscar, Mi lista, Acerca de con sesión; Detalle por tipo/ID; Editar por itemId desde Mi lista o Detalle de una obra existente. Bienvenida se conserva sin ruta accesible. Logo TMDB oficial incluido localmente; fuente y conversión documentadas en assets/TMDB-ATRIBUCION.md.
+

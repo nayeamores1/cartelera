@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function propietario(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+    function valido(d, itemId) {
+      return d.keys().hasAll(['tmdbId','tipo','titulo','anio','posterPath','estado','calificacionPersonal','comentario','agregadoEn','actualizadoEn'])
+        && d.keys().hasOnly(['tmdbId','tipo','titulo','anio','posterPath','estado','calificacionPersonal','comentario','agregadoEn','actualizadoEn'])
+        && d.tmdbId is int && d.tmdbId > 0
+        && d.tipo in ['movie','tv']
+        && itemId == d.tipo + '_' + string(d.tmdbId)
+        && d.titulo is string && d.titulo.size() > 0 && d.titulo.size() <= 200
+        && d.titulo.matches('[\\s\\S]*\\S[\\s\\S]*')
+        && d.anio is string && (d.posterPath == null || d.posterPath is string)
+        && d.estado in ['por_ver','viendo','vista']
+        && d.comentario is string && d.comentario.size() <= 500
+        && (d.calificacionPersonal == null || (d.calificacionPersonal is int && d.calificacionPersonal >= 1 && d.calificacionPersonal <= 5))
+        && (d.estado == 'vista' || d.calificacionPersonal == null)
+        && d.agregadoEn is timestamp && d.actualizadoEn is timestamp;
+    }
+    match /usuarios/{uid}/mi_lista/{itemId} {
+      allow read: if propietario(uid);
+      allow create: if propietario(uid) && valido(request.resource.data, itemId)
+        && request.resource.data.estado == 'por_ver'
+        && request.resource.data.calificacionPersonal == null
+        && request.resource.data.comentario == ''
+        && request.resource.data.agregadoEn == request.time
+        && request.resource.data.actualizadoEn == request.time;
+      allow update: if propietario(uid) && valido(request.resource.data, itemId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado','calificacionPersonal','comentario','actualizadoEn'])
+        && request.resource.data.agregadoEn == resource.data.agregadoEn
+        && request.resource.data.actualizadoEn == request.time;
+      allow delete: if propietario(uid);
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
