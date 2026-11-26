@@ -66,6 +66,10 @@ Fuente del sistema, sin descargar una familia externa: system-ui, Apple, Segoe U
 
 El wordmark tiene 26 en el encabezado del board y 20 en el teléfono. Los valores de interlínea anteriores se conservan como referencias publicadas en el board; algunos estilos HTML emplean factores relativos. La adaptación a plataforma se concretará en tokens/spec sin alterar decisiones visuales sin revisión. El titular editorial de 40–76 y el marco del board son recursos de presentación del documento, no tokens de pantalla de la app.
 
+### Adaptación aprobada para React Native — 26 de noviembre de 2026
+
+La estudiante aprueba fontWeight 700 para el título «Mi año en cine» en React Native. Se mantienen los tamaños 30/28 del teléfono; el cambio no modifica el título de otras pantallas. El brand board se conserva sin cambios y el peso 750 del dato de tarjeta permanece como referencia visual, sin aprobar por esta decisión un sustituto nativo para ese dato. La interlínea de las variantes del teléfono continúa sin un valor nuevo aprobado.
+
 ## Espacios, radios y objetivos táctiles
 
 | Token         | Valor del board       |
