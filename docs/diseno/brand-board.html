@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mi Cartelera · Brand board</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --fondo: #0b1020;
+        --superficie: #171e32;
+        --acento: #b7a0ff;
+        --texto: #f5f6fa;
+        --secundario: #aab3c7;
+        --borde: #303a54;
+        --por-ver: #aab3c7;
+        --viendo: #f3c77c;
+        --vista: #92d7b5;
+        --error: #ff9fae;
+        --esp-1: 4px;
+        --esp-2: 8px;
+        --esp-3: 12px;
+        --esp-4: 16px;
+        --esp-5: 24px;
+        --esp-6: 32px;
+        --esp-7: 48px;
+        --radio-control: 14px;
+        --radio-tarjeta: 16px;
+        --radio-poster: 18px;
+        --radio-pildora: 999px;
+        --tactil: 44px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--fondo);
+        color: var(--texto);
+        font:
+          16px/1.6 system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+      button,
+      select {
+        font: inherit;
+      }
+      button,
+      select,
+      a {
+        min-height: var(--tactil);
+        min-width: var(--tactil);
+      }
+      button,
+      select {
+        border-radius: var(--radio-control);
+        padding: 10px 16px;
+        cursor: pointer;
+      }
+      button:focus-visible,
+      select:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--acento);
+        outline-offset: 4px;
+      }
+      button:disabled {
+        cursor: default;
+      }
+      a {
+        color: var(--acento);
+        display: inline-flex;
+        align-items: center;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(40px, 5.8vw, 76px);
+        line-height: 1.04;
+        letter-spacing: -0.05em;
+        font-weight: 800;
+      }
+      h2 {
+        font-size: 26px;
+        line-height: 1.25;
+        letter-spacing: -0.025em;
+      }
+      h3 {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+      small,
+      .small {
+        font-size: 13px;
+      }
+      .muted {
+        color: var(--secundario);
+      }
+      .accent {
+        color: var(--acento);
+      }
+      .eyebrow {
+        color: var(--acento);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      .page {
+        max-width: 1320px;
+        padding: 40px 48px 64px;
+        margin: auto;
+      }
+      .masthead {
+        display: flex;
+        gap: 24px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--borde);
+        padding-bottom: 24px;
+      }
+      .wordmark {
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        font-size: 26px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+        border: 2px solid var(--acento);
+        border-radius: 10px;
+        display: inline-grid;
+        place-items: center;
+        color: var(--acento);
+        font-size: 18px;
+      }
+      .status {
+        color: var(--secundario);
+        font-size: 13px;
+      }
+      .hero {
+        padding: 48px 0;
+        max-width: 760px;
+        display: grid;
+        gap: 20px;
+      }
+      .hero p {
+        max-width: 580px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        gap: 56px;
+        align-items: start;
+      }
+      .sections {
+        display: grid;
+        gap: 48px;
+        min-width: 0;
+      }
+      section {
+        scroll-margin-top: 20px;
+      }
+      .section-title {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        margin-bottom: 20px;
+      }
+      .section-title .number {
+        color: var(--acento);
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+      }
+      .stack {
+        display: grid;
+        gap: 16px;
+      }
+      .card {
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        border-radius: var(--radio-tarjeta);
+        padding: 24px;
+      }
+      .card > * + * {
+        margin-top: 12px;
+      }
+      .grid-two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .swatch {
+        border: 1px solid var(--borde);
+        border-radius: var(--radio-control);
+        overflow: hidden;
+        background: var(--superficie);
+      }
+      .swatch-color {
+        height: 44px;
+        border-bottom: 1px solid var(--borde);
+      }
+      .swatch-info {
+        padding: 12px;
+      }
+      .swatch-info code {
+        font-size: 13px;
+        color: var(--secundario);
+      }
+      .swatch-info p {
+        font-size: 13px;
+        color: var(--secundario);
+      }
+      code {
+        overflow-wrap: anywhere;
+        font-family: ui-monospace, Consolas, monospace;
+      }
+      .type-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+        border-bottom: 1px solid var(--borde);
+        padding: 12px 0;
+      }
+      .type-row:last-child {
+        border: none;
+      }
+      .type-sample {
+        line-height: 1.25;
+      }
+      .scale {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: end;
+      }
+      .space-step {
+        display: grid;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--secundario);
+      }
+      .space-block {
+        height: 10px;
+        background: var(--acento);
+        border-radius: 3px;
+      }
+      .btn {
+        background: var(--acento);
+        color: var(--fondo);
+        border: 1px solid var(--acento);
+        font-weight: 700;
+      }
+      .btn.secondary {
+        background: var(--superficie);
+        color: var(--texto);
+        border-color: var(--borde);
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        border: 1px solid var(--borde);
+        background: var(--superficie);
+        color: var(--texto);
+        border-radius: var(--radio-pildora);
+        padding: 10px 12px;
+      }
+      .chip[aria-pressed='true'] {
+        border-color: var(--acento);
+      }
+      .state-pending {
+        color: var(--por-ver);
+      }
+      .state-watching {
+        color: var(--viendo);
+      }
+      .state-seen {
+        color: var(--vista);
+      }
+      .stars {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .star {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        font-size: 26px;
+        background: var(--superficie);
+        color: var(--acento);
+        border: 1px solid var(--borde);
+        border-radius: 12px;
+      }
+      .poster {
+        width: 84px;
+        flex: 0 0 84px;
+        aspect-ratio: 2/3;
+        border-radius: var(--radio-poster);
+        overflow: hidden;
+        background: var(--fondo);
+        border: 1px solid var(--borde);
+      }
+      .poster svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .work-card {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .work-card > * + * {
+        margin: 0;
+      }
+      .work-copy {
+        min-width: 0;
+      }
+      .work-copy p {
+        color: var(--secundario);
+        font-size: 13px;
+      }
+      .badge {
+        display: inline-block;
+        color: var(--vista);
+        font-size: 12px;
+      }
+      .metric {
+        padding: 16px;
+        min-width: 0;
+      }
+      .metric dt {
+        color: var(--secundario);
+        font-size: 13px;
+      }
+      .metric dd {
+        margin: 6px 0 0;
+        font-size: 22px;
+        font-weight: 750;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+      .metric dd.word {
+        font-size: 18px;
+      }
+      dl {
+        margin: 0;
+      }
+      .year-label {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--secundario);
+        font-size: 13px;
+      }
+      .year-select {
+        color: var(--texto);
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        font-weight: 650;
+      }
+      .chart {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 4px;
+        align-items: end;
+        margin-top: 24px;
+      }
+      .month {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .month-value {
+        color: var(--texto);
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
+      }
+      .bar-space {
+        height: 100px;
+        width: 100%;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+      }
+      .bar {
+        width: 100%;
+        max-width: 18px;
+        background: var(--acento);
+        border-radius: 4px 4px 0 0;
+      }
+      .month-label {
+        color: var(--secundario);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .state {
+        padding: 16px;
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        border-left: 3px solid var(--acento);
+        border-radius: var(--radio-control);
+      }
+      .state p {
+        color: var(--secundario);
+        font-size: 14px;
+        margin-top: 4px;
+      }
+      .state.error {
+        border-left-color: var(--error);
+      }
+      .state.error strong {
+        color: var(--error);
+      }
+      .state button {
+        margin-top: 12px;
+      }
+      .phone-area {
+        min-width: 0;
+      }
+      .phone-intro {
+        margin-bottom: 16px;
+      }
+      .phone {
+        width: 390px;
+        max-width: 100%;
+        margin: auto;
+        border: 1px solid var(--borde);
+        border-radius: 32px;
+        background: var(--fondo);
+        padding: 24px 20px;
+      }
+      .phone-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .phone-header .wordmark {
+        font-size: 20px;
+      }
+      .phone-header .brand-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+      .phone h2 {
+        font-size: 30px;
+      }
+      .phone .stack {
+        gap: 16px;
+      }
+      .phone .card {
+        padding: 16px;
+      }
+      .phone .metric {
+        margin: 0;
+      }
+      .total {
+        margin: 8px 0 0;
+        font-size: 64px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        font-variant-numeric: tabular-nums;
+      }
+      .total-unit {
+        font-size: 16px;
+        letter-spacing: 0;
+        font-weight: 500;
+        color: var(--secundario);
+      }
+      .total-split {
+        display: flex;
+        gap: 16px;
+        font-size: 14px;
+        color: var(--secundario);
+        flex-wrap: wrap;
+      }
+      .tabs {
+        display: flex;
+        justify-content: space-between;
+        gap: 4px;
+        border-top: 1px solid var(--borde);
+        padding-top: 16px;
+        margin-top: 24px;
+      }
+      .tab {
+        color: var(--secundario);
+        background: var(--fondo);
+        border: 0;
+        padding: 8px 4px;
+        font-size: 12px;
+      }
+      .tab[aria-current='page'] {
+        color: var(--acento);
+      }
+      .contrast-wrap {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13px;
+        background: var(--superficie);
+        color: var(--texto);
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid var(--borde);
+        vertical-align: top;
+      }
+      caption {
+        text-align: left;
+        color: var(--secundario);
+        padding-bottom: 12px;
+        background: var(--fondo);
+      }
+      .contrast-dot {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        border: 1px solid var(--secundario);
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+      footer {
+        margin-top: 48px;
+        border-top: 1px solid var(--borde);
+        padding-top: 24px;
+        display: grid;
+        gap: 12px;
+      }
+      .tmdb-logo {
+        width: 90px;
+        height: auto;
+        display: block;
+      }
+      .noscript {
+        padding: 24px;
+        color: var(--error);
+      }
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .phone-area {
+          grid-row: 1;
+        }
+        .page {
+          padding: 24px;
+        }
+        .hero {
+          padding: 32px 0;
+        }
+      }
+      @media (max-width: 440px) {
+        .page {
+          padding: 16px;
+        }
+        .masthead {
+          flex-direction: column;
+          align-items: start;
+          gap: 8px;
+        }
+        .phone {
+          border-radius: 24px;
+          padding: 20px 12px;
+        }
+        .card {
+          padding: 16px;
+        }
+        .palette {
+          grid-template-columns: 1fr;
+        }
+        .phone h2 {
+          font-size: 28px;
+        }
+        .wordmark {
+          font-size: 24px;
+        }
+        .type-row {
+          flex-wrap: wrap;
+        }
+        .layout {
+          gap: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <div class="wordmark">
+          <span class="brand-icon" aria-hidden="true">◧</span>Mi Cartelera<span
+            class="accent"
+            >.</span
+          >
+        </div>
+        <p class="status">Brand board · propuesta para revisión · 01</p>
+      </header>
+      <div class="hero">
+        <p class="eyebrow">Mi año en cine</p>
+        <h1>Las historias<br />que <span class="accent">se quedan.</span></h1>
+        <p class="muted">
+          Cinematográfica, cercana y clara. Un año contado a través de tus
+          historias, tus hábitos y esa obra a la que volverías.
+        </p>
+        <p class="small muted">
+          Referencia: brief de marca y backlog del proyecto. Propuesta visual,
+          no una pantalla implementada.
+        </p>
+      </div>
+      <div class="layout">
+        <main class="sections">
+          <section aria-labelledby="brand-title">
+            <div class="section-title">
+              <span class="number">01</span>
+              <h2 id="brand-title">Una marca que acompaña</h2>
+            </div>
+            <div class="card">
+              <div class="wordmark">
+                <span class="brand-icon" aria-hidden="true">◧</span>Mi
+                Cartelera<span class="accent">.</span>
+              </div>
+              <p class="muted">
+                Conservamos el lenguaje oscuro de cine, el lila, los pósteres y
+                las formas amables. La nueva pestaña se siente parte de la misma
+                app.
+              </p>
+              <p class="small muted">
+                El wordmark es la marca principal. TMDB aparece al pie como
+                fuente de datos, con su logo oficial sin alterar.
+              </p>
+            </div>
+          </section>
+          <section aria-labelledby="palette-title">
+            <div class="section-title">
+              <span class="number">02</span>
+              <h2 id="palette-title">Color con intención</h2>
+            </div>
+            <p class="muted" style="margin-bottom: 16px">
+              Base conservada del tema actual. Los estados y el error amplían la
+              paleta como propuesta; no se crean tokens de la app todavía.
+            </p>
+            <div id="palette" class="palette"></div>
+          </section>
+          <section aria-labelledby="type-title">
+            <div class="section-title">
+              <span class="number">03</span>
+              <h2 id="type-title">Tipografía que deja respirar</h2>
+            </div>
+            <div class="card">
+              <p class="muted">
+                Fuente del sistema: system-ui, Apple, Segoe UI o equivalente.
+                Sin descargas de fuentes.
+              </p>
+              <div class="type-row">
+                <span
+                  class="type-sample"
+                  style="font-size: 32px; font-weight: 800"
+                  >Mi año en cine</span
+                ><span class="small muted">Título · 32 / 39</span>
+              </div>
+              <div class="type-row">
+                <span
+                  class="type-sample"
+                  style="font-size: 24px; font-weight: 700"
+                  >Historias de un año</span
+                ><span class="small muted">Sección · 24 / 30</span>
+              </div>
+              <div class="type-row">
+                <span>Tu próxima favorita.</span
+                ><span class="small muted">Cuerpo · 16 / 26</span>
+              </div>
+              <div class="type-row">
+                <span style="font-size: 13px">Películas vistas</span
+                ><span class="small muted">Etiqueta · 13 / 20</span>
+              </div>
+              <div class="type-row">
+                <span
+                  class="accent"
+                  style="font-size: 48px; line-height: 1.1; font-weight: 800"
+                  >36</span
+                ><span class="small muted"
+                  >Dato expresivo · 48 / 53; total 64 / 70</span
+                >
+              </div>
+              <p class="small muted">
+                Tarjeta: título 18 / 25, dato 22 / 28. Auxiliar y meses: 12 /
+                17. El título de teléfono se adapta a 30 y a 28 en vistas
+                estrechas. El encabezado editorial del board usa 40–76; no es un
+                token de pantalla.
+              </p>
+            </div>
+          </section>
+          <section aria-labelledby="space-title">
+            <div class="section-title">
+              <span class="number">04</span>
+              <h2 id="space-title">Espacio y forma</h2>
+            </div>
+            <div class="card">
+              <div class="scale" id="spacing"></div>
+              <p class="muted">
+                Espacios: 4, 8, 12, 16, 24, 32 y 48 px. Radios: control 14,
+                tarjeta 16, póster 18; píldora completa.
+              </p>
+              <p>
+                Área táctil mínima: <strong>44 × 44 px</strong>. Botones
+                principales amplios, foco visible y etiquetas explícitas. Un
+                estado nunca se explica solo por su color.
+              </p>
+            </div>
+          </section>
+          <section aria-labelledby="existing-title">
+            <div class="section-title">
+              <span class="number">05</span>
+              <h2 id="existing-title">Lo que ya reconoces</h2>
+            </div>
+            <div class="stack">
+              <div id="work-example"></div>
+              <div class="card">
+                <h3>Selector de estado</h3>
+                <div class="chips" aria-label="Muestra de estados">
+                  <button class="chip state-pending" aria-pressed="false">
+                    Por ver</button
+                  ><button class="chip state-watching" aria-pressed="false">
+                    Viendo</button
+                  ><button class="chip state-seen" aria-pressed="true">
+                    Vista
+                  </button>
+                </div>
+                <p class="small muted">
+                  Botones de muestra; conservan texto y borde para reconocer la
+                  selección.
+                </p>
+              </div>
+              <div class="card">
+                <h3>Tu calificación</h3>
+                <div class="stars" id="stars-example"></div>
+                <p class="small muted">
+                  Solo disponible en Vista. Muestra visual; no guarda datos.
+                </p>
+                <button class="btn" disabled>Guardar</button
+                ><button class="btn secondary" disabled>Sin calificar</button>
+              </div>
+            </div>
+          </section>
+          <section aria-labelledby="new-title">
+            <div class="section-title">
+              <span class="number">06</span>
+              <h2 id="new-title">Un resumen, sin ruido</h2>
+            </div>
+            <div class="stack">
+              <div class="grid-two" id="metric-examples"></div>
+              <div class="card" id="year-example"></div>
+              <div class="card">
+                <h3>Actividad mensual</h3>
+                <p class="small muted">
+                  Doce meses, valor visible y barras sencillas. Sin depender
+                  solo del color.
+                </p>
+                <div id="chart-example"></div>
+              </div>
+              <div id="featured-example"></div>
+            </div>
+          </section>
+          <section aria-labelledby="voice-title">
+            <div class="section-title">
+              <span class="number">07</span>
+              <h2 id="voice-title">La voz también acompaña</h2>
+            </div>
+            <p class="muted" style="margin-bottom: 16px">
+              Breve, natural y en español. Los estados no se mezclan: faltan
+              datos no significa que no hayas visto nada.
+            </p>
+            <div class="stack" id="state-examples"></div>
+          </section>
+          <section aria-labelledby="contrast-title">
+            <div class="section-title">
+              <span class="number">08</span>
+              <h2 id="contrast-title">Contrastes comprobables</h2>
+            </div>
+            <p id="contrast-summary" class="muted" aria-live="polite">
+              11 pares declarados calculados localmente: todos superan 4,5:1;
+              mínimo 7.48:1. Al abrir se recalcula el DOM.
+            </p>
+            <div class="contrast-wrap" style="margin-top: 16px">
+              <table>
+                <caption>
+                  Relación WCAG de luminancia relativa sRGB. Mínimo aplicado a
+                  todo texto: 4,5:1, incluso texto grande.
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Texto</th>
+                    <th>Fondo</th>
+                    <th>Relación</th>
+                    <th>Resultado</th>
+                  </tr>
+                </thead>
+                <tbody id="contrast-results">
+                  <tr>
+                    <td>#F5F6FA</td>
+                    <td>#0B1020</td>
+                    <td>17.53:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#AAB3C7</td>
+                    <td>#0B1020</td>
+                    <td>9.00:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#B7A0FF</td>
+                    <td>#0B1020</td>
+                    <td>8.55:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#F5F6FA</td>
+                    <td>#171E32</td>
+                    <td>15.33:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#AAB3C7</td>
+                    <td>#171E32</td>
+                    <td>7.87:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#B7A0FF</td>
+                    <td>#171E32</td>
+                    <td>7.48:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#F3C77C</td>
+                    <td>#171E32</td>
+                    <td>10.46:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#92D7B5</td>
+                    <td>#171E32</td>
+                    <td>9.94:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#FF9FAE</td>
+                    <td>#171E32</td>
+                    <td>8.53:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#0B1020</td>
+                    <td>#B7A0FF</td>
+                    <td>8.55:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                  <tr>
+                    <td>#FF9FAE</td>
+                    <td>#0B1020</td>
+                    <td>9.76:1</td>
+                    <td>Pasa</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="small muted" style="margin-top: 12px">
+              Se inspeccionan los nodos de texto visibles, sus colores
+              calculados y su fondo sólido heredado. No hay texto sobre
+              gradientes ni opacidad. El logo oficial y las ilustraciones son
+              imágenes, no combinaciones de texto de interfaz. La tabla se
+              recalcula al cambiar el selector.
+            </p>
+          </section>
+        </main>
+        <aside class="phone-area" aria-label="Maqueta de teléfono">
+          <div class="phone-intro">
+            <p class="eyebrow">La propuesta en tu mano</p>
+            <p class="small muted">
+              Marco de 390 px, adaptable. Todos los datos y la obra son
+              ilustrativos.
+            </p>
+          </div>
+          <div class="phone" id="phone">
+            <div class="phone-header">
+              <div class="wordmark">
+                <span class="brand-icon" aria-hidden="true">◧</span>Mi Cartelera
+              </div>
+            </div>
+            <div class="stack" id="phone-content"></div>
+            <nav class="tabs" aria-label="Pestañas de muestra">
+              <button class="tab" disabled>Buscar</button
+              ><button class="tab" disabled>Mi lista</button
+              ><button class="tab" aria-current="page" disabled>Mi año</button
+              ><button class="tab" disabled>Acerca de</button>
+            </nav>
+          </div>
+        </aside>
+      </div>
+      <footer>
+        <p class="small muted">
+          Verificación de esta entrega: sintaxis y construcción de componentes
+          comprobadas localmente; 11 pares declarados superan 4,5:1. La apertura
+          visual y la lectura móvil siguen pendientes: el navegador integrado
+          bloqueó file://. No se afirma una prueba visual realizada.
+        </p>
+        <p class="small muted">
+          Propuesta para revisar antes de DESIGN.md. Conserva los patrones de Mi
+          Cartelera; no implementa reglas ni modifica la app.
+        </p>
+        <img
+          class="tmdb-logo"
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNzMuNDIgMzUuNTIiPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iYSIgeTE9IjE3Ljc2IiB4Mj0iMjczLjQyIiB5Mj0iMTcuNzYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5MGNlYTEiLz48c3RvcCBvZmZzZXQ9Ii41NiIgc3RvcC1jb2xvcj0iIzNjYmVjOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwYjNlNSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxnIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PHBhdGggZD0iTTE5MS44NSAzNS4zN2g2My45YTE3LjY3IDE3LjY3IDAgMDAxNy42Ny0xNy42N0ExNy42NyAxNy42NyAwIDAwMjU1Ljc1IDBoLTYzLjlhMTcuNjcgMTcuNjcgMCAwMC0xNy42NyAxNy43IDE3LjY3IDE3LjY3IDAgMDAxNy42NyAxNy42N3ptLTE4MS43NS4wNWg3LjhWNi45MkgyOFYwSDB2Ni45aDEwLjF6bTI4LjEgMEg0NlY4LjI1aC4xbDguOTUgMjcuMTVoNkw3MC4zIDguMjVoLjFWMzUuNGg3LjhWMEg2Ni40NWwtOC4yIDIzLjFoLS4xTDUwIDBIMzguMnpNODkuMTQuMTJoMTEuN2EzMy41NiAzMy41NiAwIDAxOC4wOCAxIDE4LjUyIDE4LjUyIDAgMDE2LjY3IDMuMDggMTUuMDkgMTUuMDkgMCAwMTQuNTMgNS41MiAxOC41IDE4LjUgMCAwMTEuNjcgOC4yNSAxNi45MSAxNi45MSAwIDAxLTEuNjIgNy41OCAxNi4zIDE2LjMgMCAwMS00LjM4IDUuNSAxOS4yNCAxOS4yNCAwIDAxLTYuMzUgMy4zNyAyNC41MyAyNC41MyAwIDAxLTcuNTUgMS4xNUg4OS4xNHptNy44IDI4LjJoNGEyMS42NiAyMS42NiAwIDAwNS0uNTVBMTAuNTggMTAuNTggMCAwMDExMCAyNmE4LjczIDguNzMgMCAwMDIuNjgtMy4zNSAxMS45IDExLjkgMCAwMDEtNS4wOCA5Ljg3IDkuODcgMCAwMC0xLTQuNTIgOS4xNyA5LjE3IDAgMDAtMi42My0zLjE4QTExLjYxIDExLjYxIDAgMDAxMDYuMjIgOGExNy4wNiAxNy4wNiAwIDAwLTQuNjgtLjYzaC00LjZ6TTEzMy4wOS4xMmgxMy4yYTMyLjg3IDMyLjg3IDAgMDE0LjYzLjMzIDEyLjY2IDEyLjY2IDAgMDE0LjE3IDEuMyA3Ljk0IDcuOTQgMCAwMTMgMi43MiA4LjM0IDguMzQgMCAwMTEuMTUgNC42NSA3LjQ4IDcuNDggMCAwMS0xLjY3IDUgOS4xMyA5LjEzIDAgMDEtNC40MyAyLjgyVjE3YTEwLjI4IDEwLjI4IDAgMDEzLjE4IDEgOC41MSA4LjUxIDAgMDEyLjQ1IDEuODUgNy43OSA3Ljc5IDAgMDExLjU3IDIuNjIgOS4xNiA5LjE2IDAgMDEuNTUgMy4yIDguNTIgOC41MiAwIDAxLTEuMiA0LjY4IDkuMzIgOS4zMiAwIDAxLTMuMSAzIDEzLjM4IDEzLjM4IDAgMDEtNC4yNyAxLjY1IDIyLjUgMjIuNSAwIDAxLTQuNzMuNWgtMTQuNXptNy44IDE0LjE1aDUuNjVhNy42NSA3LjY1IDAgMDAxLjc4LS4yIDQuNzggNC43OCAwIDAwMS41Ny0uNjUgMy40MyAzLjQzIDAgMDAxLjEzLTEuMiAzLjYzIDMuNjMgMCAwMC40Mi0xLjhBMy4zIDMuMyAwIDAwMTUxIDguNmEzLjQyIDMuNDIgMCAwMC0xLjIzLTEuMTNBNi4wNyA2LjA3IDAgMDAxNDggNi45YTkuOSA5LjkgMCAwMC0xLjg1LS4xOGgtNS4zem0wIDE0LjY1aDdhOC4yNyA4LjI3IDAgMDAxLjgzLS4yIDQuNjcgNC42NyAwIDAwMS42Ny0uNyAzLjkzIDMuOTMgMCAwMDEuMjMtMS4zIDMuOCAzLjggMCAwMC40Ny0xLjk1IDMuMTYgMy4xNiAwIDAwLS42Mi0yIDQgNCAwIDAwLTEuNTgtMS4xOCA4LjIzIDguMjMgMCAwMC0yLS41NSAxNS4xMiAxNS4xMiAwIDAwLTIuMDUtLjE1aC01Ljl6IiBmaWxsPSJ1cmwoI2EpIiBkYXRhLW5hbWU9IkxheWVyIDEiLz48L2c+PC9zdmc+"
+          alt="Logo oficial de TMDB"
+        />
+        <p class="small muted">
+          This product uses the TMDB API but is not endorsed or certified by
+          TMDB.
+        </p>
+        <p class="small muted">
+          Ilustración de póster original para esta maqueta; no es un póster
+          oficial de una obra real. Documento autónomo: sin fuentes, imágenes o
+          scripts remotos.
+        </p>
+      </footer>
+    </div>
+    <noscript
+      ><p class="noscript">
+        Activa JavaScript para ver las muestras de componentes y calcular los
+        contrastes. Esta página no realiza peticiones de red.
+      </p></noscript
+    >
+    <script>
+      const tokens = [
+        ['fondo', '#0B1020', 'Fondo de la app y del board'],
+        ['superficie', '#171E32', 'Tarjetas y controles secundarios'],
+        ['acento', '#B7A0FF', 'Acción principal, foco y datos clave'],
+        ['texto', '#F5F6FA', 'Títulos y contenido principal'],
+        ['secundario', '#AAB3C7', 'Contexto y etiquetas'],
+        ['borde', '#303A54', 'Separadores decorativos; no usar como texto'],
+        ['por-ver', '#AAB3C7', 'Etiqueta Por ver'],
+        ['viendo', '#F3C77C', 'Etiqueta Viendo'],
+        ['vista', '#92D7B5', 'Etiqueta Vista'],
+        ['error', '#FF9FAE', 'Texto y señal de error'],
+      ];
+      document.getElementById('palette').innerHTML = tokens
+        .map(
+          ([name, value, use]) =>
+            `<div class="swatch"><div class="swatch-color" style="background:${value}"></div><div class="swatch-info"><strong>${name}</strong><br><code>${value}</code><p>${use}</p></div></div>`,
+        )
+        .join('');
+      document.getElementById('spacing').innerHTML = [4, 8, 12, 16, 24, 32, 48]
+        .map(
+          (value) =>
+            `<div class="space-step"><div class="space-block" style="width:${value}px"></div><span>${value} px</span></div>`,
+        )
+        .join('');
+      const poster = () =>
+        `<div class="poster"><svg viewBox="0 0 120 180" role="img" aria-label="Póster ilustrativo de Entre estrellas"><rect width="120" height="180" fill="#0B1020"/><circle cx="75" cy="65" r="30" fill="#171E32" stroke="#B7A0FF" stroke-width="2"/><ellipse cx="65" cy="83" rx="55" ry="14" fill="none" stroke="#AAB3C7" transform="rotate(-30 65 83)"/><circle cx="25" cy="25" r="2" fill="#F5F6FA"/><circle cx="97" cy="140" r="2" fill="#F5F6FA"/><path d="M20 155L60 100L100 155" fill="none" stroke="#B7A0FF" stroke-width="2"/></svg></div>`;
+      const workCard = (featured = false) =>
+        `<article class="card work-card">${poster()}<div class="work-copy">${featured ? '<p class="eyebrow">Tu obra destacada</p>' : '<span class="badge">Vista · película</span>'}<h3>Entre estrellas</h3><p>${featured ? 'Una historia que se quedó contigo.' : '2024 · obra ficticia'}</p><p class="accent" style="color:var(--acento)">★★★★★ <span class="small">5 / 5 personal</span></p></div></article>`;
+      const metric = (label, value, word = false) =>
+        `<dl class="card metric"><dt>${label}</dt><dd class="${word ? 'word' : ''}">${value}</dd></dl>`;
+      const yearSelect = (id) =>
+        `<label class="year-label" for="${id}">Tu año en historias<select class="year-select" id="${id}" aria-label="Año ilustrativo"><option>2026</option></select></label>`;
+      const months = [
+        'Ene',
+        'Feb',
+        'Mar',
+        'Abr',
+        'May',
+        'Jun',
+        'Jul',
+        'Ago',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dic',
+      ];
+      const values = [2, 3, 0, 5, 2, 3, 2, 4, 3, 4, 3, 5];
+      const chart = () =>
+        `<div class="chart" role="img" aria-label="Obras ilustrativas por mes: ${months.map((m, i) => m + ' ' + values[i]).join(', ')}. Diciembre es el mes más activo.">${months.map((month, index) => `<div class="month"><span class="month-value">${values[index]}</span><div class="bar-space"><div class="bar" style="height:${values[index] * 20}px"></div></div><span class="month-label">${month}</span></div>`).join('')}</div>`;
+      const state = (kind, title, copy, action = '') =>
+        `<div class="state ${kind}"><strong>${title}</strong><p>${copy}</p>${action ? `<button class="btn" disabled>${action}</button>` : ''}</div>`;
+      document.getElementById('work-example').innerHTML = workCard();
+      document.getElementById('stars-example').innerHTML = [1, 2, 3, 4, 5]
+        .map(
+          (n) =>
+            `<button class="star" disabled aria-label="${n} de 5 estrellas, muestra">★</button>`,
+        )
+        .join('');
+      document.getElementById('metric-examples').innerHTML =
+        metric('Horas de cine', '47,5 h') +
+        metric('Género más visto', 'Ciencia ficción', true);
+      document.getElementById('year-example').innerHTML =
+        yearSelect('year-sample') +
+        '<p class="small muted">Solo años con obras vistas, más el actual. Esta muestra incluye únicamente 2026.</p>';
+      document.getElementById('chart-example').innerHTML = chart();
+      document.getElementById('featured-example').innerHTML = workCard(true);
+      document.getElementById('state-examples').innerHTML = [
+        state('', 'Carga', 'Estamos preparando tu año en cine.'),
+        state(
+          '',
+          'Vacío',
+          'Todavía no tienes obras vistas este año.',
+          'Ir a Mi lista',
+        ),
+        state('error', 'Error', 'No pudimos cargar tu resumen.'),
+        state('', 'Sin conexión', 'Estás viendo tu última copia guardada.'),
+        state(
+          '',
+          'Datos incompletos',
+          '2 obras siguen sin datos. El total sí las incluye.',
+        ),
+      ].join('');
+      document.getElementById('phone-content').innerHTML =
+        `<div><p class="eyebrow">Tus historias, juntas</p><h2>Mi año en cine</h2><p class="small muted">Datos ilustrativos · sin conexión a tu cuenta</p></div>${yearSelect('year-phone')}<section class="card" aria-label="Total de obras"><p class="muted">Tu año en historias</p><p class="total">36 <span class="total-unit">obras vistas</span></p><div class="total-split"><span>24 películas</span><span>12 series</span></div></section><div class="grid-two">${metric('Horas de cine', '47,5 h')}${metric('Género más visto', 'Ciencia ficción', true)}${metric('Director más visto', 'A. Rivera', true)}${metric('Mes más activo', 'Diciembre', true)}</div><section class="card"><h3>Tu ritmo, mes a mes</h3><p class="small muted">Diciembre · 5 obras</p>${chart()}</section>${workCard(true)}`;
+      document.querySelectorAll('.chips .chip').forEach((button) =>
+        button.addEventListener('click', () => {
+          document
+            .querySelectorAll('.chips .chip')
+            .forEach((item) =>
+              item.setAttribute('aria-pressed', String(item === button)),
+            );
+        }),
+      );
+
+      // Contraste real del DOM renderizado: luminancia sRGB linealizada (WCAG).
+      function rgb(color) {
+        return color
+          .match(/[\d.]+/g)
+          .slice(0, 3)
+          .map(Number);
+      }
+      function luminance(color) {
+        const values = color.map((v) => {
+          const s = v / 255;
+          return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+        });
+        return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2];
+      }
+      function hex(color) {
+        return (
+          '#' +
+          color
+            .map((v) => Math.round(v).toString(16).padStart(2, '0'))
+            .join('')
+            .toUpperCase()
+        );
+      }
+      function background(element) {
+        for (let node = element; node; node = node.parentElement) {
+          const color = getComputedStyle(node).backgroundColor;
+          if (color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent')
+            return rgb(color);
+        }
+        return [11, 16, 32];
+      }
+      function auditContrast() {
+        const pairs = new Map();
+        const walker = document.createTreeWalker(
+          document.body,
+          NodeFilter.SHOW_TEXT,
+        );
+        while (walker.nextNode()) {
+          const node = walker.currentNode,
+            parent = node.parentElement;
+          if (
+            !node.textContent.trim() ||
+            !parent ||
+            parent.closest('script,style,noscript,#contrast-results') ||
+            !parent.getClientRects().length
+          )
+            continue;
+          const fg = rgb(getComputedStyle(parent).color),
+            bg = background(parent);
+          const l1 = luminance(fg),
+            l2 = luminance(bg),
+            ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+          pairs.set(hex(fg) + '|' + hex(bg), {
+            foreground: hex(fg),
+            background: hex(bg),
+            ratio,
+          });
+        }
+        const results = [...pairs.values()].sort((a, b) => a.ratio - b.ratio);
+        document.getElementById('contrast-results').innerHTML = results
+          .map(
+            (row) =>
+              `<tr><td><span class="contrast-dot" style="background:${row.foreground}"></span>${row.foreground}</td><td>${row.background}</td><td>${row.ratio.toFixed(2)}:1</td><td>${row.ratio >= 4.5 ? 'Pasa' : 'No pasa'}</td></tr>`,
+          )
+          .join('');
+        const pass = results.every((row) => row.ratio >= 4.5);
+        document.getElementById('contrast-summary').textContent =
+          `${results.length} combinaciones de texto/fondo · ${pass ? 'todas cumplen' : 'hay contrastes insuficientes'} 4,5:1. Menor relación: ${results[0]?.ratio.toFixed(2)}:1.`;
+        window.brandBoardAudit = {
+          pass,
+          results,
+          minimum: results[0]?.ratio,
+          monthlyTotal: values.reduce((a, b) => a + b, 0),
+        };
+      }
+      window.addEventListener('load', auditContrast);
+      window.addEventListener('resize', auditContrast);
+      document
+        .querySelectorAll('select')
+        .forEach((select) => select.addEventListener('change', auditContrast));
+    </script>
+  </body>
+</html>
