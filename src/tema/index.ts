@@ -1,4 +1,4 @@
-/** Referencias aprobadas de DESIGN.md y del brand board; aún sin consumidores. */
+/** Tokens aprobados de DESIGN.md y del brand board; consumidos por los estilos. */
 export const colores = {
   fondo: '#0B1020',
   superficie: '#171E32',
@@ -33,8 +33,8 @@ export const radios = {
 export const tipografia = {
   familia: 'sistema',
   tituloPantalla: { tamano: 32, interlinea: 39, peso: 800 },
-  // Peso/interlínea del teléfono pendientes de adaptación: ver README.md local.
-  tituloTelefono: { tamano: 30, tamanoEstrecho: 28 },
+  // Peso 700 aprobado para Mi año en cine; sin nueva interlínea inventada.
+  tituloTelefono: { tamano: 30, tamanoEstrecho: 28, peso: 700 },
   seccion: { tamano: 24, interlinea: 30, peso: 700 },
   tituloTarjeta: { tamano: 18, interlinea: 25, peso: 'negrita' },
   cuerpo: { tamano: 16, interlinea: 26, peso: 'regular' },

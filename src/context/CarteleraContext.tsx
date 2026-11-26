@@ -1,8 +1,16 @@
-import { createContext, useContext, useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import type { Edicion, ObraLista, Usuario } from '../types';
 import { authService } from '../services/authService';
 import { useListaUsuario } from '../hooks/useListaUsuario';
 import type { EstadoLista } from '../services/listaController';
+import { useResumenAnual } from '../hooks/useResumenAnual';
 
 interface CarteleraContextValue extends EstadoLista {
   usuario: Usuario | null;
@@ -11,6 +19,7 @@ interface CarteleraContextValue extends EstadoLista {
   errorSesion: string | null;
   reintentarSesion: () => void;
   refrescarLista: () => Promise<boolean>;
+  resumen: ReturnType<typeof useResumenAnual>;
   acciones: {
     registrar: (correo: string, clave: string) => Promise<Usuario>;
     ingresar: (correo: string, clave: string) => Promise<Usuario>;
@@ -28,40 +37,75 @@ export function CarteleraProvider({ children }: PropsWithChildren) {
   const [errorSesion, setErrorSesion] = useState<string | null>(null);
   const [intento, setIntento] = useState(0);
   const [ocultandoLista, setOcultandoLista] = useState(false);
-  const estadoLista = useListaUsuario(ocultandoLista ? null : usuario?.uid ?? null);
+  const { controller, ...estadoLista } = useListaUsuario(
+    ocultandoLista ? null : (usuario?.uid ?? null),
+  );
+  const resumen = useResumenAnual(controller);
   const enCurso = useRef(false);
   useEffect(() => {
     let activo = true;
-    const cancelar = authService.observarSesion(user => {
-      if (!activo) return;
-      if (user) setOcultandoLista(false);
-      setUsuario(user);
-      setErrorSesion(null);
-      setRecuperandoSesion(false);
-    }, mensaje => {
-      if (!activo) return;
-      setUsuario(null);
-      setErrorSesion(mensaje);
-      setRecuperandoSesion(false);
-    });
-    return () => { activo = false; cancelar(); };
+    const cancelar = authService.observarSesion(
+      (user) => {
+        if (!activo) return;
+        if (user) setOcultandoLista(false);
+        setUsuario(user);
+        setErrorSesion(null);
+        setRecuperandoSesion(false);
+      },
+      (mensaje) => {
+        if (!activo) return;
+        setUsuario(null);
+        setErrorSesion(mensaje);
+        setRecuperandoSesion(false);
+      },
+    );
+    return () => {
+      activo = false;
+      cancelar();
+    };
   }, [intento]);
-  async function conBloqueo<T,>(operacion: () => Promise<T>): Promise<T> {
-    if (enCurso.current) throw new Error('Hay una operación en curso. Espera un momento.');
+  async function conBloqueo<T>(operacion: () => Promise<T>): Promise<T> {
+    if (enCurso.current)
+      throw new Error('Hay una operación en curso. Espera un momento.');
     enCurso.current = true;
     setProcesandoAuth(true);
-    try { return await operacion(); }
-    finally { enCurso.current = false; setProcesandoAuth(false); }
+    try {
+      return await operacion();
+    } finally {
+      enCurso.current = false;
+      setProcesandoAuth(false);
+    }
   }
   const value: CarteleraContextValue = {
-    usuario, recuperandoSesion, procesandoAuth, errorSesion,
-    reintentarSesion: () => { setRecuperandoSesion(true); setErrorSesion(null); setIntento(actual => actual + 1); },
+    usuario,
+    recuperandoSesion,
+    procesandoAuth,
+    errorSesion,
+    resumen,
+    reintentarSesion: () => {
+      setRecuperandoSesion(true);
+      setErrorSesion(null);
+      setIntento((actual) => actual + 1);
+    },
     ...estadoLista,
     acciones: {
-      registrar: (correo, clave) => conBloqueo(() => authService.registrar(correo, clave)),
-      ingresar: (correo, clave) => conBloqueo(() => authService.ingresar(correo, clave)),
-      salir: () => conBloqueo(async () => { setOcultandoLista(true); try { await authService.salir(); } catch (error: unknown) { setOcultandoLista(false); throw error; } }),
-      agregar: estadoLista.agregar, editar: estadoLista.actualizar, eliminar: estadoLista.eliminar,
+      registrar: (correo, clave) =>
+        conBloqueo(() => authService.registrar(correo, clave)),
+      ingresar: (correo, clave) =>
+        conBloqueo(() => authService.ingresar(correo, clave)),
+      salir: () =>
+        conBloqueo(async () => {
+          setOcultandoLista(true);
+          try {
+            await authService.salir();
+          } catch (error: unknown) {
+            setOcultandoLista(false);
+            throw error;
+          }
+        }),
+      agregar: estadoLista.agregar,
+      editar: estadoLista.actualizar,
+      eliminar: estadoLista.eliminar,
     },
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;

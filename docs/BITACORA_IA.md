@@ -4,9 +4,9 @@ Se utilizaron ChatGPT y Codex como apoyo. ChatGPT ayudó a definir la propuesta 
 
 Periodo de la bitácora: del 22 al 25 de octubre de 2026. La cronología se organiza retrospectivamente por etapas; esta distribución no acredita fechas exactas de ejecución de las comprobaciones, cuyos resultados y fuentes se conservan sin cambios.
 
-## Estado vigente de las pruebas — actualización documental del 25 de octubre de 2026
+## Estado vigente de las pruebas — actualización del 26 de noviembre de 2026
 
-Última comprobación local: tras corregir las coerciones de validación de Mi lista, TypeScript y ESLint pasan; 23 pruebas unitarias y 5 grupos de reglas/transacciones en emulador pasan. Son ejecuciones locales nuevas, descritas al final; no añaden confirmaciones manuales en dispositivo.
+Última comprobación local del paso 16: npm test aprueba 98 pruebas (23 node:test y 75 Vitest), incluido el sensor con cero hallazgos; TypeScript y ESLint pasan, y el emulador aprueba 7 grupos. Los 17 casos nuevos del controlador usan fuentes aisladas; no acreditan render ni recorridos en teléfono. Las confirmaciones manuales siguientes siguen siendo las históricas del Proyecto 3. Detalles actuales en PRUEBAS_RESUMEN.md.
 
 Las entradas siguientes registran lo que ocurrió en cada etapa. Sus frases «pendiente», «sin publicar» o «no probado en dispositivo» describen ese momento y no sustituyen este estado actualizado:
 
@@ -30,17 +30,17 @@ No se conocen fechas individuales ni plataforma móvil exacta de cada ensayo a p
 
 ## Verificación real
 
-| Comando | Resultado |
-| --- | --- |
-| `npm install` | Instalación completada; Node 22.12 del sistema produjo advertencias de engines. |
-| `npx expo install (dependencias requeridas y lint)` | Completado; versiones en package-lock.json. |
-| `npm run typecheck` | Primer intento falló por declaración Firebase; tras corrección pasó. |
-| `npm run lint` | Pasó, sin errores ni avisos. |
-| `npx expo install --check` | Primera ejecución offline advirtió fiabilidad limitada; repetido con red: Dependencies are up to date, código 0. |
-| `npx expo export --platform android --output-dir dist` | Primer intento falló por permiso de escritura de Hermes en temporal del sandbox; repetido con acceso autorizado: bundle de 886 módulos, código 0. No es publicación ni prueba en dispositivo. |
-| `npm audit --omit=dev --json` | Código 1: 9 vulnerabilidades altas; informe real en docs/audit-produccion.json. |
-| `npm install --package-lock-only --offline --ignore-scripts` | Completado para alinear metadatos engines del lock; su salida offline indicó 0 vulnerabilidades, lo cual NO invalida la auditoría con red. |
-| `git check-ignore .env .env.local .env.example dist/test node_modules/test` | .env, .env.local, dist y node_modules ignorados; .env.example permitido. |
+| Comando                                                                     | Resultado                                                                                                                                                                                     |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm install`                                                               | Instalación completada; Node 22.12 del sistema produjo advertencias de engines.                                                                                                               |
+| `npx expo install (dependencias requeridas y lint)`                         | Completado; versiones en package-lock.json.                                                                                                                                                   |
+| `npm run typecheck`                                                         | Primer intento falló por declaración Firebase; tras corrección pasó.                                                                                                                          |
+| `npm run lint`                                                              | Pasó, sin errores ni avisos.                                                                                                                                                                  |
+| `npx expo install --check`                                                  | Primera ejecución offline advirtió fiabilidad limitada; repetido con red: Dependencies are up to date, código 0.                                                                              |
+| `npx expo export --platform android --output-dir dist`                      | Primer intento falló por permiso de escritura de Hermes en temporal del sandbox; repetido con acceso autorizado: bundle de 886 módulos, código 0. No es publicación ni prueba en dispositivo. |
+| `npm audit --omit=dev --json`                                               | Código 1: 9 vulnerabilidades altas; informe real en docs/audit-produccion.json.                                                                                                               |
+| `npm install --package-lock-only --offline --ignore-scripts`                | Completado para alinear metadatos engines del lock; su salida offline indicó 0 vulnerabilidades, lo cual NO invalida la auditoría con red.                                                    |
+| `git check-ignore .env .env.local .env.example dist/test node_modules/test` | .env, .env.local, dist y node_modules ignorados; .env.example permitido.                                                                                                                      |
 
 Tras el último ajuste se ejecutaron directamente con Node 24.22.1 `node node_modules/typescript/bin/tsc --noEmit` y `node node_modules/eslint/bin/eslint.js src App.tsx index.ts`: ambos pasaron (código 0).
 
@@ -182,3 +182,9 @@ Pendiente real: publicar manualmente el archivo local de reglas desde Firebase C
 - Las pruebas usan el cacheService real con AsyncStorage aislado: guardar datos inválidos rechaza la operación antes de sobrescribir la copia válida; leer datos malformados rechaza de forma controlada sin borrarlos ni alterar la copia de otra cuenta. El controlador termina la carga inicial offline mostrando el error de lectura y recupera estado y caché válidos al reconectar al servidor simulado. No fue necesario modificar el servicio de caché ni el controlador.
 - Comprobaciones ejecutadas con Node 24.22.1: `node node_modules/typescript/bin/tsc --noEmit`, `node node_modules/eslint/bin/eslint.js src tests App.tsx index.ts`, `node --test tests/*.test.cjs` y `node tests/rules/ejecutar.cjs`. Todas terminaron con código 0: TypeScript/ESLint sin errores, 23/23 unitarias y 5/5 grupos de reglas/transacciones en emulador. El emulador advirtió que futuras versiones de Firebase CLI requerirán Java 21; la ejecución actual pasó.
 - No se ejecutaron pruebas nuevas en Expo Go ni producción. Se conservan las confirmaciones manuales y los pendientes anteriores. No se cambiaron reglas, dependencias, .env ni configuración de Git; no hubo commits, despliegues ni publicaciones.
+
+## 26 de noviembre de 2026 — integración del paso 16 (épica)
+
+La estudiante aprobó el plan y peso 700 para el título de Mi año en cine. Codex registró primero esa decisión y el plan en 271b9ae, conservando 750 como referencia visual pendiente de adaptación. Después preparó, sin commit de código, la fachada del tema y estilos en src/tema/, el controlador del resumen y su conexión a Context, la nueva pestaña, selector, métricas, meses, destacada y estados.
+
+Los puntos PA-01–PA-06 permanecen abiertos: los errores de punto abierto se capturan y muestran su escenario pendiente. No se decide clasificar vacíos/null como candidatas D6 ni reintentarlas automáticamente; D2 con fechas de origen válidas se conecta online. Codex añadió pruebas con fuentes aisladas y política de candidatas inyectada únicamente en un fixture para comprobar el fallo parcial. La revisión React utilizó la skill vercel:react-best-practices. Los resultados exactos actuales y recorridos reproducibles pendientes se registran en PRUEBAS_RESUMEN.md; no sustituyen ni amplían las confirmaciones humanas históricas del Proyecto 3. No se leyó .env, publicaron reglas, migraron cuentas reales ni modificaron capturas.

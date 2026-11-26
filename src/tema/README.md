@@ -27,3 +27,9 @@ Ejecutada por Codex el 26 de noviembre de 2026, con Node 24.22.1 y `EXPO_NO_DOTE
 - Prettier local aplicado únicamente a los dos archivos nuevos de `src/tema/`.
 
 Los tokens no tienen consumidores aún. No se migraron imports, no se construyó una pantalla ni se modificó el sensor. Se dejan sin commit para revisión.
+
+## Adaptación aprobada y adopción en el paso 16
+
+La estudiante aprobó peso 700 para el título «Mi año en cine» el 26 de noviembre de 2026, registrado en DESIGN.md y el plan antes de implementar. tituloTelefono incorpora ese peso; no se fija una interlínea nueva. El 750 del dato de tarjeta sigue como referencia pendiente de adaptación: la implementación no lo convierte a otro peso ni lo fuerza con un cast. Las tarjetas conservan tamaño/interlínea 22/28; su peso final queda sin asignar hasta la decisión.
+
+Los estilos heredados se trasladan sin cambiar sus valores a estilosHeredados.ts, que consume colores de index.ts. src/theme/index.ts queda como fachada de compatibilidad, sin colores propios. Los párrafos anteriores describen la preparación histórica del paso 15.
