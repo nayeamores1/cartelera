@@ -15,7 +15,7 @@ App académica móvil en español para buscar películas/series TMDB y gestionar
 ## Documentación, diseño y revisión
 
 - Documentar alcance, criterios y verificación antes de implementar cada cambio. Los commits docs: preceden a los de código; no justificar retrospectivamente una implementación. Trabajar por hitos y conservar los tests existentes.
-- Antes de modificar pantallas o componentes, leer DESIGN.md una vez creado en el Hito 2. Mientras no exista, conservar el diseño actual; no crearlo ni modificar decisiones visuales por iniciativa propia. Cambios de DESIGN.md requieren revisión de la estudiante.
+- Antes de modificar cualquier pantalla o componente, leer obligatoriamente DESIGN.md de la raíz: ya existe y deriva del brand board aprobado del Hito 2. Conservar sus valores y decisiones; no modificar DESIGN.md ni decisiones visuales por iniciativa propia. Sus cambios requieren revisión de la estudiante.
 - La estudiante revisa cambios antes de cada commit. No crear commits ni hacer push o despliegues sin autorización. Consultar docs/HARNESS.md y el procedimiento .claude/skills/commit/SKILL.md; para Codex existe un adaptador en .agents/skills/commit/. No asumir un comando /commit disponible.
 - Conservar español, atribución y logo TMDB, safe areas, teclado, etiquetas accesibles y objetivos táctiles de al menos 44×44. Distinguir carga, error, vacío y sin conexión. No afirmar pruebas móviles no realizadas.
 
