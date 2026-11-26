@@ -20,7 +20,9 @@
     "@types/react": "~19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-expo": "~58.0.4",
-    "typescript": "~6.0.3"
+    "prettier": "3.10.1",
+    "typescript": "~6.0.3",
+    "vitest": "4.1.12"
   },
   "scripts": {
     "start": "expo start",
@@ -30,8 +32,11 @@
     "dev": "expo start",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests App.tsx index.ts",
-    "test": "node --test tests/*.test.cjs",
-    "test:rules": "node tests/rules/ejecutar.cjs"
+    "test": "npm run test:existing && npm run test:sensor",
+    "test:existing": "node --test tests/*.test.cjs",
+    "test:sensor": "vitest run",
+    "test:rules": "node tests/rules/ejecutar.cjs",
+    "format:files": "node scripts/format-edited.cjs"
   },
   "private": true,
   "engines": {

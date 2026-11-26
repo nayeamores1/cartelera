@@ -1,0 +1,9 @@
+.env
+.env.*
+node_modules/
+.git/
+.expo/
+dist/
+dist-auth/
+.firebase/
+*.log
